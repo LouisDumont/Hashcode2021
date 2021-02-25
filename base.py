@@ -6,10 +6,14 @@ from dataclasses import dataclass
 
 class Intersection():
     def __init__(self):
-        self.in_streets = []
+        self.in_streets = {}
 
     def add_in_street(self, street_name):
-        self.in_streets.append(street_name)
+        self.in_streets[street_name]=0
+
+    def update_street_importance(self, street_name, importance):
+        self.in_streets[street_name]=importance
+
 
 @dataclass
 class Street():
@@ -90,6 +94,7 @@ if __name__ == '__main__' :
     parser.add_argument("--filename", type=str)
     args = parser.parse_args()
     streets, cars, intersections = parse_input(args.filename)
+    print(intersections[0].in_streets)
     # expectation_heuristic(libraries,days, book_to_value)
     # for i in range(len(libraries)):
     #     print(i,libraries[i].scannedBooks)
