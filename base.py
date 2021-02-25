@@ -24,54 +24,7 @@ class Car():
         self.streets_taken = streets_taken
         self.importance = importance
 
-class Library():
-    def __init__(self,id, signupDelay, flow, nbBooks):
-        self.id = id
-        self.books_id = []
-        self.signupDelay= signupDelay
-        self.flow = flow # nb books shippable per day
-        self.nbBooks = nbBooks
-        self.scannedBooks = []
-        self.isOpen = False
-        self.openNumber=float("inf")
-
-    def add_book(self,book_id, dic):
-        self.books_id.append(book_id)
-        self.books_id.sort(key = lambda x : dic[x])
-    
-    def add_books(self,books_ids,dic):
-        self.books_id.extend(books_ids)
-        self.books_id.sort(key = lambda x : dic[x])
-
-    def average_returns(self,days,book_to_value):
-        profitDays=days-self.signupDelay
-        self.books_id.sort(key = lambda x : book_to_value[x])
-        bestbooks=self.books_id[-profitDays*self.flow:]
-        score=0
-        for book in bestbooks:
-            score+=book_to_value[book]
-        return score/days
-
-
-    def scan_books(self, books):
-        self.scannedBooks.extend(books)
-        self.scannedBooks=list(dict.fromkeys(self.scannedBooks))
-    
-    def scan_n_best_books(self,n,book_to_value):
-        self.books_id.sort(key = lambda x : book_to_value[x])
-        if len(self.scannedBooks)<len(self.books_id):
-            if n>0:
-                self.scan_books(self.books_id[-n:])
-                return self.books_id[-n:]
-        return []
-
-    def openLibrary(self, number): #number indique c'est la combientieme librairie qu'on ouvre
-        self.isOpen = True
-        self.openNumber = number
-
         
-
-
 # For txt
 def make_out(instance_name, lib_list):
     '''Instance name is the csv file name (with .txt)
@@ -122,9 +75,6 @@ def parse_input(filename):
             total_streets_travel = int(line_split[0])
             streets_taken = line_split[1:]
             cars.append(Car(streets_taken))
-
-
-
 
     return streets, cars
 
