@@ -1,7 +1,7 @@
 def compute_streets_frequentation(streets, cars, mode="raw"):
     for car in cars:
         for street_name in car.streets_taken:
-            street_name = street_name.split("\n")[0]
+            street_name = street_name
             if mode == "raw":
                 car_importance = 1
             streets[street_name].update_frequentation(car_importance)
