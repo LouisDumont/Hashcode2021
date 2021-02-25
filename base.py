@@ -3,6 +3,7 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 from dataclasses import dataclass
+import math
 
 from frequentation import compute_streets_frequentation, compute_inters_importance
 from order import compute_starting_points, compute_starting_orders
@@ -54,15 +55,22 @@ def make_out(instance_name, intersections):
             res_file.write(f"{i}\n")
             list_importance = np.array(list(intersection.in_streets.values()))
             nb_frequented_streets = np.count_nonzero(list_importance)
+            
             if nb_frequented_streets==0:
                 res_file.write("1\n")
                 res_file.write(f"{list(intersection.in_streets.keys())[0]} 1\n")
             else:
                 res_file.write(f"{nb_frequented_streets}\n")
                 min_importance = np.min(list_importance[np.nonzero(list_importance)])
+                THRESHOLD = 20.
+                max_importance = max(list_importance)/min_importance
                 for street in intersection.in_streets.keys():
                     if intersection.in_streets[street] >0:
-                        res_file.write(f"{street} {int(round(intersection.in_streets[street]/min_importance))}\n")
+                        if max_importance > THRESHOLD:
+                            importance = int(math.ceil(intersection.in_streets[street]/min_importance/max_importance * THRESHOLD))
+                        else:
+                            importance = int(round(intersection.in_streets[street]/min_importance))
+                        res_file.write(f"{street} {importance}\n")
 
 
 def parse_input(filename):
