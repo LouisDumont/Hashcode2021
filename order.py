@@ -1,4 +1,4 @@
-def compute_strating_points(streets, cars, mode="raw"):
+def compute_starting_points(streets, cars, mode="raw"):
     for car in cars:
         street_name = car.streets_taken[0]
         if mode == "raw":
@@ -10,7 +10,7 @@ def compute_strating_points(streets, cars, mode="raw"):
 
 def compute_starting_orders(streets, intersections):
     for inter in intersections:
-    
+
         streets_with_importance = []
         for street_name in inter.in_streets.keys():
             street_init_frequentation = streets[street_name].init_frequentation

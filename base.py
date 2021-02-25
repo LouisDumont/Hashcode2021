@@ -5,6 +5,7 @@ import numpy as np
 from dataclasses import dataclass
 
 from frequentation import compute_streets_frequentation, compute_inters_importance
+from order import compute_starting_points, compute_starting_orders
 from importance import update_cars_importance
 
 class Intersection():
@@ -25,9 +26,13 @@ class Street():
     name: str
     travel_time: int
     frequentation: float = 0.
+    init_frequentation: float = 0.
 
     def update_frequentation(self, frequentation_increment):
         self.frequentation += frequentation_increment
+
+    def update_init_frequentation(self, frequentation_increment):
+        self.init_frequentation += frequentation_increment
 
 class Car():
     def __init__(self, streets_taken, importance = 0):
@@ -98,9 +103,12 @@ if __name__ == '__main__' :
     streets, cars, intersections, total_time, car_base_score = parse_input(args.filename)
     update_cars_importance(cars, streets, total_time, car_base_score)
     # print(intersections[0].in_streets)
-    compute_streets_frequentation(streets, cars, mode="car_importance")
+    compute_streets_frequentation(streets, cars, mode="raw")  # car_importance
     # print(streets)
     compute_inters_importance(streets, intersections)
+
+    compute_starting_points(streets, cars, mode="raw")
+    compute_starting_orders(streets, intersections)
     # for i in range(len(intersections)):
     #     print("---")
     #     for street_name in intersections[i].in_streets.keys():
