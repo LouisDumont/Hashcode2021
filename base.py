@@ -39,29 +39,26 @@ class Car():
 
         
 # For txt
-def make_out(instance_name, lib_list):
+def make_out(instance_name, intersections):
     '''Instance name is the csv file name (with .txt)
     lib_list is simply the list of libraries'''
-
+    print(instance_name[:-4] +'_output.txt')
     with open(instance_name[:-4] +'_output.txt', 'w') as res_file:
-
-        open_libs_list = np.array([1 if lib.isOpen==True and len(lib.scannedBooks)>0 else 0 for lib in lib_list])
-        open_libs = np.sum(open_libs_list)
-        # print(open_libs)
-
-        res_file.write(str(open_libs) + '\n')
-
-        lib_list.sort(key = lambda x: x.openNumber)
-
-        for i, lib in enumerate(lib_list):
-            if lib.isOpen and len(lib.scannedBooks)>0:
-                # print("scannedBooks",lib.scannedBooks)
-                nb_books = len(lib.scannedBooks)
-                res_file.write(str(lib.id) + ' ' + str(nb_books) + '\n')
-                books_str = ''
-                for i, idx in enumerate(lib.scannedBooks):
-                    books_str += str(idx) + ' '
-                res_file.write(books_str[:-1] + '\n')
+        res_file.write(f"{len(intersections)}\n")
+        for i,intersection in enumerate(intersections):
+            res_file.write(f"{i}\n")
+            list_importance = np.array(list(intersection.in_streets.values()))
+            print("importance",list_importance)
+            nb_frequented_streets = np.count_nonzero(list_importance)
+            if nb_frequented_streets==0:
+                res_file.write("1\n")
+                res_file.write(f"{list(intersection.in_streets.keys())[0]} 1\n")
+            else:
+                res_file.write(f"{nb_frequented_streets}\n")
+                min_importance = np.min(list_importance[np.nonzero(list_importance)])
+                for street in intersection.in_streets.keys():
+                    if intersection.in_streets[street] >0:
+                        res_file.write(f"{street} {int(intersection.in_streets[street]/min_importance)}\n")
 
 
 def parse_input(filename):
@@ -112,5 +109,5 @@ if __name__ == '__main__' :
     # expectation_heuristic(libraries,days, book_to_value)
     # for i in range(len(libraries)):
     #     print(i,libraries[i].scannedBooks)
-    # make_out(args.filename,libraries)
+    make_out(args.filename,intersections)
 
