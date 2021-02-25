@@ -33,6 +33,9 @@ class Car():
         self.streets_taken = streets_taken
         self.importance = importance
 
+    def update_importance(self, importance):
+        self.importance = importance
+
         
 # For txt
 def make_out(instance_name, lib_list):
@@ -96,6 +99,7 @@ if __name__ == '__main__' :
     parser.add_argument("--filename", type=str)
     args = parser.parse_args()
     streets, cars, intersections = parse_input(args.filename)
+    update_cars_importance(cars, streets, total_time, car_base_score)
     print(intersections[0].in_streets)
     compute_streets_frequentation(streets, cars)
     print(streets)
