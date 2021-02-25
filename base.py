@@ -58,7 +58,7 @@ def make_out(instance_name, intersections):
                 min_importance = np.min(list_importance[np.nonzero(list_importance)])
                 for street in intersection.in_streets.keys():
                     if intersection.in_streets[street] >0:
-                        res_file.write(f"{street} {int(intersection.in_streets[street]/min_importance)}\n")
+                        res_file.write(f"{street} {round(intersection.in_streets[street]/min_importance)}\n")
 
 
 def parse_input(filename):
