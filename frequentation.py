@@ -3,7 +3,7 @@ def compute_streets_frequentation(streets, cars, mode="raw"):
         for street_name in car.streets_taken:
             street_name = street_name
             if mode == "raw":
-            streets[street_name].update_frequentation(car.importance)
+            	streets[street_name].update_frequentation(car.importance)
 
 
 def compute_inters_importance(streets, intersections):
