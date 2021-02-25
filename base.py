@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from dataclasses import dataclass
 
+from frequentation import compute_frequentation
+
 class Intersection():
     def __init__(self):
         self.in_streets = {}
@@ -95,6 +97,8 @@ if __name__ == '__main__' :
     args = parser.parse_args()
     streets, cars, intersections = parse_input(args.filename)
     print(intersections[0].in_streets)
+    compute_frequentation(streets, cars)
+    print(streets)
     # expectation_heuristic(libraries,days, book_to_value)
     # for i in range(len(libraries)):
     #     print(i,libraries[i].scannedBooks)
