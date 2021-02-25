@@ -102,7 +102,7 @@ if __name__ == '__main__' :
     streets, cars, intersections, total_time, car_base_score = parse_input(args.filename)
     update_cars_importance(cars, streets, total_time, car_base_score)
     print(intersections[0].in_streets)
-    compute_streets_frequentation(streets, cars)
+    compute_streets_frequentation(streets, cars, mode="car_importance")
     print(streets)
     compute_inters_importance(streets, intersections)
     for i in range(len(intersections)):
