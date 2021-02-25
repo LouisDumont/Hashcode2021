@@ -5,6 +5,7 @@ import numpy as np
 from dataclasses import dataclass
 
 from frequentation import compute_streets_frequentation, compute_inters_importance
+from importance import update_cars_importance
 
 class Intersection():
     def __init__(self):
@@ -31,6 +32,9 @@ class Street():
 class Car():
     def __init__(self, streets_taken, importance = 0):
         self.streets_taken = streets_taken
+        self.importance = importance
+
+    def update_importance(self, importance):
         self.importance = importance
 
         
@@ -66,7 +70,7 @@ def parse_input(filename):
         cars = []
         line = f.readline()
 
-        total_time, total_intersections, total_streets, total_cars, car_score = list(map(int, line.split(" ")))
+        total_time, total_intersections, total_streets, total_cars, car_base_score = list(map(int, line.split(" ")))
 
         intersections = [Intersection() for i in range(total_intersections)]
 
@@ -82,12 +86,12 @@ def parse_input(filename):
 
 
         for i in range(total_cars):
-            line_split = f.readline().split(" ")
+            line_split = f.readline().split("\n")[0].split(" ")
             total_streets_travel = int(line_split[0])
             streets_taken = line_split[1:]
             cars.append(Car(streets_taken))
 
-    return streets, cars, intersections
+    return streets, cars, intersections, total_time, car_base_score
 
 
 
@@ -95,7 +99,8 @@ if __name__ == '__main__' :
     parser = argparse.ArgumentParser()
     parser.add_argument("--filename", type=str)
     args = parser.parse_args()
-    streets, cars, intersections = parse_input(args.filename)
+    streets, cars, intersections, total_time, car_base_score = parse_input(args.filename)
+    update_cars_importance(cars, streets, total_time, car_base_score)
     print(intersections[0].in_streets)
     compute_streets_frequentation(streets, cars)
     print(streets)
