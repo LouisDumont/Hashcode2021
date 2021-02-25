@@ -6,7 +6,10 @@ from dataclasses import dataclass
 
 class Intersection():
     def __init__(self):
-        self.a = 0
+        self.in_streets = []
+
+    def add_in_street(self, street_name):
+        self.in_streets.append(street_name)
 
 @dataclass
 class Street():
@@ -53,14 +56,14 @@ def make_out(instance_name, lib_list):
 
 def parse_input(filename):
     with open(filename, 'r') as f :
-        # book_to_value = {}
-        # libraries = []
-        # compteur = 0
         streets = {}
         cars = []
         line = f.readline()
 
         total_time, total_intersections, total_streets, total_cars, car_score = list(map(int, line.split(" ")))
+
+        intersections = [Intersection() for i in range(total_intersections)]
+
 
         for i in range(total_streets):
             intersection_in, intersection_out, name, travel_time = f.readline().split(" ")
@@ -69,6 +72,8 @@ def parse_input(filename):
             travel_time = int(travel_time)
 
             streets[name]=Street(intersection_in, intersection_out, name, travel_time)
+            intersections[intersection_out].add_in_street(name)
+
 
         for i in range(total_cars):
             line_split = f.readline().split(" ")
@@ -76,39 +81,15 @@ def parse_input(filename):
             streets_taken = line_split[1:]
             cars.append(Car(streets_taken))
 
-    return streets, cars
+    return streets, cars, intersections
 
-
-
-        # book_number = int(book_number)
-        # libraries_number = int(libraries_number)
-        # days = int(days)
-        # scores  = f.readline().split(" ")
-        # for i,score in  enumerate(scores):
-        #     book_to_value[i]=int(score)
-
-        # compteur = 0
-        # while compteur < libraries_number :
-        #     line = f.readline()
-        #     N,T,M = line.split(" ")
-        #     N = int(N)
-        #     T = int(T)
-        #     M = int(M)
-        #     libraries.append(Library(compteur,T,M,N))
-        #     list_books = f.readline().split(" ")
-        #     list_books = list(map(int,list_books))
-        #     libraries[-1].add_books(list_books,book_to_value)
-        #     compteur+=1
-        
-        # return book_to_value, libraries, days
 
 
 if __name__ == '__main__' :
     parser = argparse.ArgumentParser()
     parser.add_argument("--filename", type=str)
     args = parser.parse_args()
-    streets, cars = parse_input(args.filename)
-    print(cars)
+    streets, cars, intersections = parse_input(args.filename)
     # expectation_heuristic(libraries,days, book_to_value)
     # for i in range(len(libraries)):
     #     print(i,libraries[i].scannedBooks)
