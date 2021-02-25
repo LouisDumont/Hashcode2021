@@ -17,7 +17,7 @@ def compute_inters_importance(streets, intersections):
             street_frequentation = streets[street_name].frequentation
             inter.update_street_importance(street_name, street_frequentation)
             sum_frequentation += street_frequentation
-        sum_frequentation = max(1, sum_frequentations)
+        sum_frequentation = max(1, sum_frequentation)
         # Get importances from frequentations
         for street_name in inter.in_streets.keys():
             street_importance = inter.in_streets[street_name] / sum_frequentation
