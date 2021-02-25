@@ -62,7 +62,7 @@ def make_out(instance_name, intersections):
                 min_importance = np.min(list_importance[np.nonzero(list_importance)])
                 for street in intersection.in_streets.keys():
                     if intersection.in_streets[street] >0:
-                        res_file.write(f"{street} {round(intersection.in_streets[street]/min_importance)}\n")
+                        res_file.write(f"{street} {int(round(intersection.in_streets[street]/min_importance))}\n")
 
 
 def parse_input(filename):
@@ -103,11 +103,11 @@ if __name__ == '__main__' :
     streets, cars, intersections, total_time, car_base_score = parse_input(args.filename)
     update_cars_importance(cars, streets, total_time, car_base_score)
     # print(intersections[0].in_streets)
-    compute_streets_frequentation(streets, cars, mode="raw")  # car_importance
+    compute_streets_frequentation(streets, cars, mode="car_importance")  # car_importance
     # print(streets)
     compute_inters_importance(streets, intersections)
 
-    compute_starting_points(streets, cars, mode="raw")
+    compute_starting_points(streets, cars, mode="car_importance")
     compute_starting_orders(streets, intersections)
     # for i in range(len(intersections)):
     #     print("---")
