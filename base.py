@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from dataclasses import dataclass
 
-from frequentation import compute_frequentation
+from frequentation import compute_streets_frequentation, compute_inters_importance
 
 class Intersection():
     def __init__(self):
@@ -23,10 +23,10 @@ class Street():
     intersection_out: int
     name: str
     travel_time: int
-    importance: float = 0.
+    frequentation: float = 0.
 
-    def update_importance(self, importance_increment):
-        self.importance += importance_increment
+    def update_frequentation(self, frequentation_increment):
+        self.frequentation += frequentation_increment
 
 class Car():
     def __init__(self, streets_taken, importance = 0):
@@ -97,8 +97,13 @@ if __name__ == '__main__' :
     args = parser.parse_args()
     streets, cars, intersections = parse_input(args.filename)
     print(intersections[0].in_streets)
-    compute_frequentation(streets, cars)
+    compute_streets_frequentation(streets, cars)
     print(streets)
+    compute_inters_importance(streets, intersections)
+    for i in range(len(intersections)):
+        print("---")
+        for street_name in intersections[i].in_streets.keys():
+            print(intersections[i].in_streets[street_name])
     # expectation_heuristic(libraries,days, book_to_value)
     # for i in range(len(libraries)):
     #     print(i,libraries[i].scannedBooks)
