@@ -48,7 +48,6 @@ def make_out(instance_name, intersections):
         for i,intersection in enumerate(intersections):
             res_file.write(f"{i}\n")
             list_importance = np.array(list(intersection.in_streets.values()))
-            print("importance",list_importance)
             nb_frequented_streets = np.count_nonzero(list_importance)
             if nb_frequented_streets==0:
                 res_file.write("1\n")
@@ -98,16 +97,13 @@ if __name__ == '__main__' :
     args = parser.parse_args()
     streets, cars, intersections, total_time, car_base_score = parse_input(args.filename)
     update_cars_importance(cars, streets, total_time, car_base_score)
-    print(intersections[0].in_streets)
+    # print(intersections[0].in_streets)
     compute_streets_frequentation(streets, cars, mode="car_importance")
-    print(streets)
+    # print(streets)
     compute_inters_importance(streets, intersections)
-    for i in range(len(intersections)):
-        print("---")
-        for street_name in intersections[i].in_streets.keys():
-            print(intersections[i].in_streets[street_name])
-    # expectation_heuristic(libraries,days, book_to_value)
-    # for i in range(len(libraries)):
-    #     print(i,libraries[i].scannedBooks)
+    # for i in range(len(intersections)):
+    #     print("---")
+    #     for street_name in intersections[i].in_streets.keys():
+    #         print(intersections[i].in_streets[street_name])
     make_out(args.filename,intersections)
 
